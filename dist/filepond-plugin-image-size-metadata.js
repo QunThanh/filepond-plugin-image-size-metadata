@@ -22,6 +22,15 @@
             var image = document.createElement('img');
             image.src = URL.createObjectURL(file);
             image.onerror = function(err) {
+                if (image.naturalWidth == 0 && image.naturalHeight == 0) {
+                    clearInterval(intervalId);
+                    URL.revokeObjectURL(image.src);
+                    resolve({
+                        width: image.naturalWidth,
+                        height: image.naturalHeight
+                    });
+                    return;
+                }
                 clearInterval(intervalId);
                 reject(err);
             };
